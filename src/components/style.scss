@@ -1,0 +1,48 @@
+.main_table_div {
+  width: 70%;
+  height: 60vh;
+  padding: 1em;
+  background-color: #fff;
+  border-radius: 5px;
+
+  .main_table {
+    width: 100%;
+    height: 60vh;
+    border: 1px solid #000;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    background-color: #fff;
+    color: #000;
+    border-radius: 5px;
+    overflow: hidden;
+    thead {
+      font-weight: bold;
+      height: 3em;
+    }
+    .row_table {
+      border-bottom: 1px solid #000;
+      transition: all 0.2s ease-in-out;
+      cursor: pointer;
+
+      &:nth-child(odd) {
+        background-color: #d8d8d8;
+      }
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .cell_table {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}
