@@ -1,14 +1,17 @@
-.main_table_div {
-  width: 70%;
-  height: 60vh;
+.main_div {
+  width: 85vw;
+  height: 80vh;
   padding: 1em;
   background-color: #fff;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
 
   .main_table {
     width: 100%;
-    height: 60vh;
-    border: 1px solid #000;
+    height: 100%;
+    -webkit-box-shadow: 0px 3px 9px -2px #000000;
+    box-shadow: 0px 3px 9px -2px #000000;
     font-size: 14px;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
@@ -19,9 +22,12 @@
     thead {
       font-weight: bold;
       height: 3em;
+      th {
+        cursor: pointer;
+      }
     }
     .row_table {
-      border-bottom: 1px solid #000;
+      border-right: 1px solid #000;
       transition: all 0.2s ease-in-out;
       cursor: pointer;
 
@@ -35,14 +41,53 @@
       &:last-child {
         border-bottom: none;
       }
+    }
+  }
+  .pagination {
+    height: 10vh;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5em;
+    span {
+      font-size: 14px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: bold;
+    }
 
-      .cell_table {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .previous_next_buttons {
+      padding: 0.75em;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      &:hover {
+        background-color: #ab4e4ea8;
       }
+    }
+    .pagination_button {
+      font-size: 14px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: bold;
+      padding: 0.75em;
+      border: none;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      &:hover {
+        background-color: #ab4e4ea8;
+      }
+    }
+    .active {
+      background-color: #ab4e4e;
+    }
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }
