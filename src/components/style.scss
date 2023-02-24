@@ -6,7 +6,28 @@
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-
+  .component_header {
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5em;
+    input {
+      width: 25em;
+      padding: 0.5em;
+      border-radius: 5px;
+      border: 1px solid #b4b4b47d;
+      outline: none;
+      font-size: 14px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: bold;
+      transition: all 0.2s ease-in-out;
+      &:focus-within {
+        box-shadow: 0px 0px 5px black;
+      }
+    }
+  }
   .main_table {
     width: 100%;
     height: 100%;
@@ -24,6 +45,17 @@
       height: 3em;
       th {
         cursor: pointer;
+      }
+    }
+    tbody {
+      .no_data {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 14px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
       }
     }
     .row_table {
@@ -44,7 +76,6 @@
     }
   }
   .pagination {
-    height: 10vh;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -88,6 +119,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      background-color: #d8d8d8;
     }
   }
 }

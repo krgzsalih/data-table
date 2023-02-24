@@ -3,6 +3,7 @@ import "./style.scss";
 import TableRow from "./tableComponents/TableRow";
 import TableHead from "./tableComponents/TableHead";
 import Pagination from "./tableComponents/Pagination";
+import Input from "./tableComponents/Input";
 
 export type TableColumn<T> = {
   [x: string]: any;
@@ -27,14 +28,24 @@ export default function Table<T>({
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const [areAllChecked, setAreAllChecked] = useState(false);
   const [selectedItem, setSelectedItem] = useState<object[]>([]);
+  const [searchedData, setSearchedData] = useState("");
+
+  const filteredData = React.useMemo(() => {
+    if (!searchedData) return data;
+    return data.filter((item: any) => {
+      return Object.keys(item)
+        .map((key) => String(item[key]).toLowerCase())
+        .some((value) => value.includes(searchedData.toLowerCase()));
+    });
+  }, [data, searchedData]);
 
   const sortedData = React.useMemo(() => {
-    if (sortColumn == null) return data;
-    const sorted = [...data].sort((a, b) =>
+    if (sortColumn == null) return filteredData;
+    const sorted = [...filteredData].sort((a, b) =>
       a[sortColumn] < b[sortColumn] ? -1 : 1
     );
     return sortDirection === "asc" ? sorted : sorted.reverse();
-  }, [data, sortColumn, sortDirection]);
+  }, [filteredData, sortColumn, sortDirection]);
 
   const pagedData = React.useMemo(() => {
     const startIndex = page * pageSize;
@@ -60,14 +71,19 @@ export default function Table<T>({
 
   return (
     <div className="main_div">
-      <Pagination
-        data={data.length}
-        pagedData={pagedData}
-        page={page}
-        setPage={setPage}
-        pageCount={pageCount}
-        pageNumbers={pageNumbers}
-      />
+      <div className="component_header">
+        <Input setSearchedData={setSearchedData} />
+        {filteredData.length !== 0 && (
+          <Pagination
+            data={data.length}
+            pagedData={pagedData}
+            page={page}
+            setPage={setPage}
+            pageCount={pageCount}
+            pageNumbers={pageNumbers}
+          />
+        )}
+      </div>
       <table className="main_table">
         <thead>
           <TableHead
@@ -79,30 +95,39 @@ export default function Table<T>({
             setSortDirection={setSortDirection}
           />
         </thead>
-        <tbody>
-          {pagedData.map((item, index) => {
-            return (
-              <TableRow
-                key={index}
-                index={index}
-                item={item}
-                areAllChecked={areAllChecked}
-                columns={columns}
-                selectedItem={selectedItem}
-                setSelectedItem={setSelectedItem}
-              />
-            );
-          })}
+        <tbody style={{ position: "relative" }}>
+          {filteredData.length !== 0 ? (
+            pagedData.map((item, index) => {
+              return (
+                <TableRow
+                  key={index}
+                  index={index}
+                  item={item}
+                  areAllChecked={areAllChecked}
+                  columns={columns}
+                  selectedItem={selectedItem}
+                  setSelectedItem={setSelectedItem}
+                />
+              );
+            })
+          ) : (
+            <tr className="no_data">There is no data to show!</tr>
+          )}
         </tbody>
       </table>
-      <Pagination
-        data={data.length}
-        pagedData={pagedData}
-        page={page}
-        setPage={setPage}
-        pageCount={pageCount}
-        pageNumbers={pageNumbers}
-      />
+      <div className="component_header">
+        <div></div>
+        {filteredData.length !== 0 && (
+          <Pagination
+            data={data.length}
+            pagedData={pagedData}
+            page={page}
+            setPage={setPage}
+            pageCount={pageCount}
+            pageNumbers={pageNumbers}
+          />
+        )}
+      </div>
     </div>
   );
 }

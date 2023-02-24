@@ -350,3 +350,14 @@ function App() {
 }
 
 export default App;
+
+// useEffect(() => {
+//   // const searched = data.filter((item) => {
+//   //   return Object.values(item)
+//   //     .map((value) => value.toString())
+//   //     .join("")
+//   //     .toLowerCase()
+//   //     .includes(searchedData.toLowerCase());
+//   // });
+//   console.log(searchedData);
+// }, [searchedData]);
