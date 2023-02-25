@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import "./style.scss";
 import TableRow from "./tableComponents/TableRow";
 import TableHead from "./tableComponents/TableHead";
 import Pagination from "./tableComponents/Pagination";
 import Input from "./tableComponents/Input";
+import Selectbox from "./tableComponents/Selectbox";
 
 export type TableColumn<T> = {
   [x: string]: any;
@@ -16,12 +17,14 @@ type TableData<T> = {
   data: T[];
   pageSize?: number;
   columns: TableColumn<T>[];
+  setPageSize: (n: number) => void;
 };
 
 export default function Table<T>({
   data,
   pageSize = 10,
   columns,
+  setPageSize,
 }: TableData<T>) {
   const [page, setPage] = useState(0);
   const [sortColumn, setSortColumn] = useState<keyof T | null>(null);
@@ -65,14 +68,11 @@ export default function Table<T>({
     return numbers;
   }, [pageCount]);
 
-  useEffect(() => {
-    console.log(selectedItem);
-  }, [selectedItem]);
-
   return (
     <div className="main_div">
       <div className="component_header">
         <Input setSearchedData={setSearchedData} />
+        {filteredData.length !== 0 && <Selectbox setPageSize={setPageSize} />}
         {filteredData.length !== 0 && (
           <Pagination
             data={data.length}
