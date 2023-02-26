@@ -3,6 +3,7 @@ type InputProps = {
 };
 
 export default function Input({ setSearchedData }: InputProps) {
+  // Holds values data in entered input tag and assign it to setStateAction which comes from parant component
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     setSearchedData(e.currentTarget.value);
   };

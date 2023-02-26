@@ -4,7 +4,6 @@ import {
   ReactElement,
   ReactFragment,
   ReactPortal,
-  useEffect,
   useState,
 } from "react";
 
@@ -27,29 +26,28 @@ export default function TableRow({
   item,
   selectedItem,
   hiddenColumns,
-  setHiddenColumns,
   setSelectedItem,
 }: Props) {
   const [checked, setChecked] = useState(false);
+  // This function is called when a checkbox in a row is clicked
   const onSelectedChange = (e: ChangeEvent<HTMLInputElement>) => {
     setChecked(e.target.checked);
     setSelectedItem([...selectedItem, item]);
   };
-  useEffect(() => {
-    if (areAllChecked) {
-      setChecked(true);
-    }
-  }, [checked, areAllChecked]);
 
   return (
     <tr key={index} className="row_table">
+      {/* Renders a checkbox in the first column of the row */}
       <td className="table_checkbox">
         <input
           type="checkbox"
+          // Sets the checked state of the checkbox based on whether all checkboxes are checked or not
           checked={areAllChecked === true ? areAllChecked : checked}
+          // Calls the onSelectedChange function when the checkbox is clicked
           onChange={(e) => onSelectedChange(e)}
         ></input>
       </td>
+      {/* Renders the data for each column in the row */}
       {columns.map(
         (column: {
           accessor: string;
@@ -65,6 +63,7 @@ export default function TableRow({
             | null
             | undefined;
         }) =>
+          // Only renders columns that are not hidden
           !hiddenColumns.includes(column.accessor) && (
             <td key={column.accessor as string} style={{ padding: "0px 10px" }}>
               {column.render

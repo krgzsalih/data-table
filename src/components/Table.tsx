@@ -35,6 +35,8 @@ export default function Table<T>({
   const [searchedData, setSearchedData] = useState("");
   const [hiddenColumns, setHiddenColumns] = useState<string[]>([]);
 
+  // Memorize the filtered data and waiting any change. If there any, it is going to filter data
+  // with coming from search input
   const filteredData = React.useMemo(() => {
     if (!searchedData) return data;
     return data.filter((item: any) => {
@@ -44,6 +46,7 @@ export default function Table<T>({
     });
   }, [data, searchedData]);
 
+  // Sorting data based on selected column and direction
   const sortedData = React.useMemo(() => {
     if (sortColumn == null) return filteredData;
     const sorted = [...filteredData].sort((a, b) =>
@@ -52,16 +55,20 @@ export default function Table<T>({
     return sortDirection === "asc" ? sorted : sorted.reverse();
   }, [filteredData, sortColumn, sortDirection]);
 
+  // Pagination based on selected page and page size
   const pagedData = React.useMemo(() => {
     const startIndex = page * pageSize;
     return sortedData.slice(startIndex, startIndex + pageSize);
   }, [page, pageSize, sortedData]);
 
+  // Calculating page count and number for pagination
   const pageCount = useMemo(
     () => Math.ceil(data.length / pageSize),
     [data.length, pageSize]
   );
 
+  // it is going to create
+  // page numbers with coming from pageCount
   const pageNumbers = useMemo(() => {
     const numbers = [];
     for (let i = 0; i < pageCount; i++) {
@@ -74,8 +81,11 @@ export default function Table<T>({
     <div className="main_div">
       <div className="component_header">
         <Input setSearchedData={setSearchedData} />
+        {/* Do not show pagesize selectbox if there is no data */}
         {filteredData.length !== 0 && <Selectbox setPageSize={setPageSize} />}
+        {/* Do not show pagesize Pagination component if there is no data */}
         {filteredData.length !== 0 && (
+          // Pagination component that display the pagination buttons
           <Pagination
             data={data.length}
             pagedData={pagedData}
@@ -86,16 +96,20 @@ export default function Table<T>({
           />
         )}
       </div>
+      {/* If hiddenColumns array got any variable, show component which holds hidden columns names */}
       {hiddenColumns.length > 0 && (
         <div className="hidden_buttons">
           <span>Hidden columns (select to show):</span>
           {hiddenColumns.map((item) => {
+            // This checks whether the current item is hidden or not.
             const isHidden = hiddenColumns.includes(item);
             return (
               <p>
                 <label htmlFor="hidden_checkbox">
                   <AiFillEye size={18} />
                 </label>
+                {/* When the checkbox is changed, it calls the setHiddenColumns function with a callback that either removes the current item from the prevState array if it was previously hidden, 
+                or adds it to the prevState array */}
                 <input
                   name="hidden_checkbox"
                   id="hidden_checkbox"
@@ -132,6 +146,7 @@ export default function Table<T>({
             />
           </thead>
           <tbody style={{ position: "relative" }}>
+            {/* If filteredData got any values, then show it in component. Otherwise show info text */}
             {filteredData.length !== 0 ? (
               pagedData.map((item, index) => {
                 return (

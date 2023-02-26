@@ -39,6 +39,7 @@ export default function TableHead({
           style={{}}
         ></input>
       </th>
+      {/* Map through the columns array and return a table header for each visible column */}
       {columns.map(
         (column: {
           accessor: string;
@@ -52,22 +53,28 @@ export default function TableHead({
             | null
             | undefined;
         }) =>
+          // Check if the column is hidden
           !hiddenColumns.includes(column.accessor) && (
             <th
               key={column.accessor as string}
+              // Add a click event listener to the column header
               onClick={() => {
                 if (sortColumn === column.accessor) {
+                  // If the column is already sorted, reverse the sorting order
                   setSortDirection((d: string) =>
                     d === "asc" ? "desc" : "asc"
                   );
                 } else {
+                  // If the column is not already sorted, sort the column in ascending order
                   setSortColumn(column.accessor);
                   setSortDirection("asc");
                 }
               }}
             >
+              {/* Render the column header and add an arrow icon for indicating the sorting direction */}
               <span>{column.header}</span>
               <IoMdArrowDropdown size={18} />
+              {/* Add a button for hiding the column */}
               <button
                 onClick={() =>
                   setHiddenColumns([...hiddenColumns, column.accessor])
