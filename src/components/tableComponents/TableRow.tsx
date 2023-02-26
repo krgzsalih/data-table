@@ -4,6 +4,7 @@ import {
   ReactElement,
   ReactFragment,
   ReactPortal,
+  useEffect,
   useState,
 } from "react";
 
@@ -13,6 +14,8 @@ type Props = {
   columns: any;
   item: any;
   selectedItem: {}[];
+  hiddenColumns: string[];
+  setHiddenColumns: (arg0: string[]) => void;
   setSelectedItem: (arg0: {}[]) => void;
 };
 
@@ -23,6 +26,8 @@ export default function TableRow({
   columns,
   item,
   selectedItem,
+  hiddenColumns,
+  setHiddenColumns,
   setSelectedItem,
 }: Props) {
   const [checked, setChecked] = useState(false);
@@ -30,10 +35,15 @@ export default function TableRow({
     setChecked(e.target.checked);
     setSelectedItem([...selectedItem, item]);
   };
+  useEffect(() => {
+    if (areAllChecked) {
+      setChecked(true);
+    }
+  }, [checked, areAllChecked]);
 
   return (
     <tr key={index} className="row_table">
-      <td>
+      <td className="table_checkbox">
         <input
           type="checkbox"
           checked={areAllChecked === true ? areAllChecked : checked}
@@ -54,13 +64,14 @@ export default function TableRow({
             | ReactPortal
             | null
             | undefined;
-        }) => (
-          <td key={column.accessor as string}>
-            {column.render
-              ? column.render(item[column.accessor])
-              : defaultRender(item[column.accessor])}
-          </td>
-        )
+        }) =>
+          !hiddenColumns.includes(column.accessor) && (
+            <td key={column.accessor as string} style={{ padding: "0px 10px" }}>
+              {column.render
+                ? column.render(item[column.accessor])
+                : defaultRender(item[column.accessor])}
+            </td>
+          )
       )}
     </tr>
   );

@@ -27,10 +27,6 @@ export default function Pagination({
   if (pageCount <= maxVisiblePages) {
     visiblePages = pageNumbers;
   } else {
-    if (startPage > 0) {
-      visiblePages.push("...");
-    }
-
     visiblePages = pageNumbers.slice(startPage, endPage + 1);
 
     if (endPage < pageCount - 1) {
@@ -47,48 +43,43 @@ export default function Pagination({
       <span>{`Showing ${pagedData[0].id} - ${
         pagedData[pagedData.length - 1].id
       } of ${data}`}</span>
-      <button
-        disabled={page === 0}
-        onClick={() => setPage(0)}
-        className="previous_next_buttons"
-      >
-        <RxDoubleArrowLeft size={13} />
-      </button>
-      <button
-        disabled={page === 0}
-        onClick={() => setPage((p: number) => p - 1)}
-        className="previous_next_buttons"
-      >
-        <MdArrowBackIosNew size={13} />
-      </button>
-      {visiblePages.map((pageNumber, index) => (
-        <button
-          disabled={pageNumber === -1}
-          key={index}
-          className={
-            page === pageNumber
-              ? "pagination_button active"
-              : "pagination_button"
-          }
-          onClick={() => setPage(pageNumber)}
-        >
-          {pageNumber === -1 ? "..." : pageNumber + 1}
+      <div className="pagination_buttons">
+        <button disabled={page === 0} onClick={() => setPage(0)}>
+          <RxDoubleArrowLeft size={13} />
         </button>
-      ))}
-      <button
-        disabled={page === pageCount - 1}
-        onClick={() => setPage((p: number) => p + 1)}
-        className="previous_next_buttons"
-      >
-        <MdArrowForwardIos size={13} />
-      </button>
-      <button
-        disabled={page === pageCount - 1}
-        onClick={() => setPage(pageCount - 1)}
-        className="previous_next_buttons"
-      >
-        <RxDoubleArrowRight size={13} />
-      </button>
+        <button
+          disabled={page === 0}
+          onClick={() => setPage((p: number) => p - 1)}
+        >
+          <MdArrowBackIosNew size={13} />
+        </button>
+        {visiblePages.map((pageNumber, index) => (
+          <button
+            disabled={pageNumber === -1}
+            key={index}
+            className={
+              page === pageNumber
+                ? "pagination_button active"
+                : "pagination_button"
+            }
+            onClick={() => setPage(pageNumber)}
+          >
+            {pageNumber === -1 ? "..." : pageNumber + 1}
+          </button>
+        ))}
+        <button
+          disabled={page === pageCount - 1}
+          onClick={() => setPage((p: number) => p + 1)}
+        >
+          <MdArrowForwardIos size={13} />
+        </button>
+        <button
+          disabled={page === pageCount - 1}
+          onClick={() => setPage(pageCount - 1)}
+        >
+          <RxDoubleArrowRight size={13} />
+        </button>
+      </div>
     </div>
   );
 }

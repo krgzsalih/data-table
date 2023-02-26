@@ -32,6 +32,7 @@ export default function Table<T>({
   const [areAllChecked, setAreAllChecked] = useState(false);
   const [selectedItem, setSelectedItem] = useState<object[]>([]);
   const [searchedData, setSearchedData] = useState("");
+  const [hiddenColumns, setHiddenColumns] = useState<string[]>([]);
 
   const filteredData = React.useMemo(() => {
     if (!searchedData) return data;
@@ -84,37 +85,43 @@ export default function Table<T>({
           />
         )}
       </div>
-      <table className="main_table">
-        <thead>
-          <TableHead
-            columns={columns}
-            sortColumn={sortColumn}
-            sortDirection={sortDirection}
-            setSortColumn={setSortColumn}
-            setAreAllChecked={setAreAllChecked}
-            setSortDirection={setSortDirection}
-          />
-        </thead>
-        <tbody style={{ position: "relative" }}>
-          {filteredData.length !== 0 ? (
-            pagedData.map((item, index) => {
-              return (
-                <TableRow
-                  key={index}
-                  index={index}
-                  item={item}
-                  areAllChecked={areAllChecked}
-                  columns={columns}
-                  selectedItem={selectedItem}
-                  setSelectedItem={setSelectedItem}
-                />
-              );
-            })
-          ) : (
-            <tr className="no_data">There is no data to show!</tr>
-          )}
-        </tbody>
-      </table>
+      <div className="table_container">
+        <table className="main_table">
+          <thead>
+            <TableHead
+              hiddenColumns={hiddenColumns}
+              columns={columns}
+              sortColumn={sortColumn}
+              sortDirection={sortDirection}
+              setHiddenColumns={setHiddenColumns}
+              setSortColumn={setSortColumn}
+              setAreAllChecked={setAreAllChecked}
+              setSortDirection={setSortDirection}
+            />
+          </thead>
+          <tbody style={{ position: "relative" }}>
+            {filteredData.length !== 0 ? (
+              pagedData.map((item, index) => {
+                return (
+                  <TableRow
+                    hiddenColumns={hiddenColumns}
+                    setHiddenColumns={setHiddenColumns}
+                    key={index}
+                    index={index}
+                    item={item}
+                    areAllChecked={areAllChecked}
+                    columns={columns}
+                    selectedItem={selectedItem}
+                    setSelectedItem={setSelectedItem}
+                  />
+                );
+              })
+            ) : (
+              <tr className="no_data">There is no data to show!</tr>
+            )}
+          </tbody>
+        </table>
+      </div>
       <div className="component_header">
         <div></div>
         {filteredData.length !== 0 && (

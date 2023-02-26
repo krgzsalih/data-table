@@ -7,12 +7,11 @@ export default function Input({ setSearchedData }: InputProps) {
     setSearchedData(e.currentTarget.value);
   };
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Search"
-        onChange={(e) => handleChange(e)}
-      />
-    </div>
+    <input
+      className="input"
+      type="text"
+      placeholder="Search"
+      onChange={(e) => handleChange(e)}
+    />
   );
 }
