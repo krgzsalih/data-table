@@ -5,6 +5,7 @@ import TableHead from "./tableComponents/TableHead";
 import Pagination from "./tableComponents/Pagination";
 import Input from "./tableComponents/Input";
 import Selectbox from "./tableComponents/Selectbox";
+import { AiFillEye } from "react-icons/ai";
 
 export type TableColumn<T> = {
   [x: string]: any;
@@ -85,6 +86,37 @@ export default function Table<T>({
           />
         )}
       </div>
+      {hiddenColumns.length > 0 && (
+        <div className="hidden_buttons">
+          <span>Hidden columns (select to show):</span>
+          {hiddenColumns.map((item) => {
+            const isHidden = hiddenColumns.includes(item);
+            return (
+              <p>
+                <label htmlFor="hidden_checkbox">
+                  <AiFillEye size={18} />
+                </label>
+                <input
+                  name="hidden_checkbox"
+                  id="hidden_checkbox"
+                  type="checkbox"
+                  checked={!isHidden}
+                  onChange={() => {
+                    setHiddenColumns((prevState) => {
+                      if (isHidden) {
+                        return prevState.filter((col) => col !== item);
+                      } else {
+                        return [...prevState, item];
+                      }
+                    });
+                  }}
+                />
+                {item}
+              </p>
+            );
+          })}
+        </div>
+      )}
       <div className="table_container">
         <table className="main_table">
           <thead>

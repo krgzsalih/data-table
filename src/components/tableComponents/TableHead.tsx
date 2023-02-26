@@ -3,9 +3,9 @@ import {
   JSXElementConstructor,
   ReactFragment,
   ReactPortal,
-  useEffect,
 } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { AiFillEyeInvisible } from "react-icons/ai";
 
 type TableHeadProps = {
   columns: any;
@@ -30,15 +30,6 @@ export default function TableHead({
   setSortDirection,
   setHiddenColumns,
 }: TableHeadProps) {
-  // const handleHideColumn = (accessor: keyof T) => {
-  //   setHiddenColumns((prevState : any) => {
-  //     return {
-  //       ...prevState,
-  //       [accessor]: !prevState[accessor]
-  //     }
-  //   });
-  // };
-
   return (
     <tr>
       <th>
@@ -83,7 +74,7 @@ export default function TableHead({
                 }
                 className="hide_button"
               >
-                Hide
+                <AiFillEyeInvisible size={18} />
               </button>
             </th>
           )
